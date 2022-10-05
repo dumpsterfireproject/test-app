@@ -1,0 +1,41 @@
+# We could have used this to generate types in the domain/model, 
+# but I chose not to for now (because I had added GraphQL later)
+# It may make sense to have a separate model, if you needed to add
+# something like other struct tags, like for a mongo driver or such
+type Item {
+	ID:          ID!
+	SKU:         String!
+	Description: String!
+}
+
+type Inventory {
+	ID:       ID!
+	Item:     Item!
+	Location: String!
+	Status:   String!
+	Quantity: Int!
+}
+
+type Query {
+    items: [Item!]!
+    itemInventory(itemID: String!): [Inventory!]!
+}
+
+input NewInventory {
+	ItemID:   ID!
+	Location: String!
+	Status:   String!
+	Quantity: Int!
+}
+
+input RemoveInventory {
+	ItemID:   ID!
+	Location: String!
+	Status:   String!
+	Quantity: Int!
+}
+
+type Mutation {
+    addInventory(input: NewInventory!): Inventory!
+    removeInventory(input: RemoveInventory!): Inventory!
+}
