@@ -4,10 +4,12 @@ import (
 	"context"
 	"log"
 
+	testapp "github.com/cycle-labs/test-app"
 	"github.com/cycle-labs/test-app/internal/adapters/api"
 	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
 	"github.com/cycle-labs/test-app/internal/domain/ports"
 	"github.com/genjidb/genji"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -41,7 +43,15 @@ func startServer() {
 	authenticatedRoot := authenticatedAPI.AuthenticatedRouterGroup(ginEngine, apiRoot)
 	jsonAPI.AddInventoryRoutes(authenticatedRoot)
 	graphQLAPI.AddGraphQLRoutes(authenticatedRoot)
+
+	// ui := api.NewWebUIEndpoints(testapp.EmbeddedFiles)
+	// ui.AddRoutes(ginEngine.Group("/"))
+
+	fs := api.EmbedFolder(testapp.EmbeddedFiles, "webui/build", true)
+	ginEngine.Use(static.Serve("/", fs))
+
 	ginEngine.Run(":8080")
+
 }
 
 func createInMemoryDatabase() (*genji.DB, error) {
