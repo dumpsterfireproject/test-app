@@ -66,6 +66,7 @@ func (api *GinJsonAPIServiceImpl) AddInventoryRequestHander() func(c *gin.Contex
 
 func (api *GinJsonAPIServiceImpl) DeleteInventoryRequestHander() func(c *gin.Context) {
 	return func(c *gin.Context) {
+		// TODO: Need returns or such for not founds
 		itemID, found := c.GetQuery("itemID")
 		if !found {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "itemID parameter is required"})
