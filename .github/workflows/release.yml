@@ -15,6 +15,18 @@ jobs:
         goarch: [amd64,arm64]
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: webui/package-lock.json
+      - name: npm ci
+        working-directory: ./webui
+        run: npm ci  
+      - name: Build Web UI
+        working-directory: ./webui
+        run: npm run build
       - name: Run tests
         run: go test -v -p=1 -timeout=0 ./...
       - uses: wangyoucao577/go-release-action@v1.16
