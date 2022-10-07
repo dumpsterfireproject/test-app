@@ -6,8 +6,8 @@ Sample application to be used to write BDD features against
 To provide a single executable that provides a simple application that can be used to practice writing a variety of
 end to end tests against. The application includes a terminal based UI, a web UI, a JSON API, and a GraphQL API.
 
-It also has some interesting examples that might make for some good future blog posts, like using gqlgen, air, tview, and
-hexagonal architecture.
+It also has some interesting examples that might make for some good future blog posts, like using gqlgen, air, tview,
+hexagonal architecture, and functional options.
 
 ## About the Test App
 
