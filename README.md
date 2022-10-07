@@ -1,4 +1,7 @@
 # test-app
+
+[![build-test](https://github.com/dumpsterfireproject/test-app/actions/workflows/build-test.yml/badge.svg)](https://github.com/dumpsterfireproject/test-app/actions/workflows/build-test.yml)
+
 Sample application to be used to write BDD features against
 
 ## Motivation
