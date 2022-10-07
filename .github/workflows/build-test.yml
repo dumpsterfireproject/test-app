@@ -22,8 +22,8 @@ jobs:
       with:
         node-version: 16
         cache: 'npm'
-    - run: npm ci  
-    - run: npm build
+    - run: npm --prefix ./webui/ ci  
+    - run: npm --prefix ./webui/ build
 
     - name: Build
       run: go build -v ./...
