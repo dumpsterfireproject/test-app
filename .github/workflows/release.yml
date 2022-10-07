@@ -15,6 +15,10 @@ jobs:
         goarch: [amd64,arm64]
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -27,13 +31,16 @@ jobs:
       - name: Build Web UI
         working-directory: ./webui
         run: npm run build
+      - name: Build
+        run: go build -v ./...
       - name: Run tests
-        run: go test -v -p=1 -timeout=0 ./...
+        run: go test -v ./...
       - uses: wangyoucao577/go-release-action@v1.16
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
+          goversion: 1.18
           project_path: "./cmd/server"
           binary_name: "testapp"
           # ldflags: "-s -w"
