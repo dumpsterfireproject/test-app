@@ -44,9 +44,6 @@ func startServer() {
 	jsonAPI.AddInventoryRoutes(authenticatedRoot)
 	graphQLAPI.AddGraphQLRoutes(authenticatedRoot)
 
-	// ui := api.NewWebUIEndpoints(testapp.EmbeddedFiles)
-	// ui.AddRoutes(ginEngine.Group("/"))
-
 	fs := api.EmbedFolder(testapp.EmbeddedFiles, "webui/build", true)
 	ginEngine.Use(static.Serve("/", fs))
 

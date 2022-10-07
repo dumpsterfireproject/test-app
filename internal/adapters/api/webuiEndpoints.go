@@ -2,16 +2,11 @@ package api
 
 import (
 	"embed"
-	"fmt"
 	"io/fs"
 	"net/http"
 
 	"github.com/gin-gonic/contrib/static"
 )
-
-type WebUIEndpoints struct {
-	staticFS fs.FS
-}
 
 func EmbedFolder(fsEmbed embed.FS, targetPath string, index bool) static.ServeFileSystem {
 	subFS, err := fs.Sub(fsEmbed, targetPath)
@@ -24,23 +19,6 @@ func EmbedFolder(fsEmbed embed.FS, targetPath string, index bool) static.ServeFi
 	}
 }
 
-// func NewWebUIEndpoints(staticFS fs.FS) *WebUIEndpoints {
-// 	api := &WebUIEndpoints{staticFS: staticFS}
-// 	return api
-// }
-
-// func (api *WebUIEndpoints) AddRoutes(root *gin.RouterGroup) {
-// 	fs := embeddedFileSystem{staticFS: api.staticFS}
-// 	root.Use(static.Serve("/", fs))
-// }
-
-// func (api *WebUIEndpoints) AddRoutes(root *gin.RouterGroup) {
-// 	fmt.Println("ADDING...")
-// 	fs := embeddedFileSystem{staticFS: api.staticFS}
-// 	root.GET("/", static.Serve("/", fs))
-// 	// root.Use(static.Serve("/", fs))
-// }
-
 type embeddedFileSystem struct {
 	http.FileSystem
 	staticFS fs.FS
@@ -48,7 +26,6 @@ type embeddedFileSystem struct {
 }
 
 func (e embeddedFileSystem) Exists(prefix string, path string) bool {
-	fmt.Printf("-->%s...%s\n", prefix, path)
 	f, err := e.Open(path) // e.staticFS.Open(path)
 	if err != nil {
 		return false
