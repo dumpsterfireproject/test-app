@@ -27,9 +27,9 @@ jobs:
     - name: npm ci
       working-directory: ./webui
       run: npm ci  
-    - name: npm build
+    - name: Build Web UI
       working-directory: ./webui
-      run: npm build
+      run: npm run build
 
     - name: Build
       run: go build -v ./...
