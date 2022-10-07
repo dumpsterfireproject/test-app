@@ -10,9 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # build and publish in parallel: linux/amd64
-        goos: [darwin,linux,windows]
-        goarch: [amd64,arm64]
+        # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
+        goos: [linux, windows, darwin]
+        goarch: ["386", amd64, arm64]
+        exclude:
+          - goarch: "386"
+            goos: darwin
+          - goarch: arm64
+            goos: windows
     steps:
       - uses: actions/checkout@v2
       - name: Set up Go
@@ -41,8 +46,8 @@ jobs:
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
           goversion: 1.19
-          # project_path: "./cmd/server"
-          build_flags: "./cmd/server/main.go"
+          project_path: "./cmd/server"
+          # build_flags: "./cmd/server/main.go"
           binary_name: "testapp"
           # ldflags: "-s -w"
           extra_files: LICENSE README.md

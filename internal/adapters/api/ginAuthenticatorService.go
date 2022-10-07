@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -22,7 +21,6 @@ func NewGinAuthenicatorService() GinAuthenicatorService {
 // For demo, right now we accept any non-empty token
 func (auth *GinAuthenicatorServiceImpl) AuthenticateToken(c *gin.Context) {
 	header := c.Request.Header.Get("Authorization")
-	fmt.Printf("HEADER (%s)", header)
 	if !strings.HasPrefix(header, "Bearer ") {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
