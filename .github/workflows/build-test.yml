@@ -19,11 +19,11 @@ jobs:
         go-version: 1.18
 
     - name: Setup Node
-      working-directory: ./webui
       uses: actions/setup-node@v3
       with:
         node-version: 16
         cache: 'npm'
+        cache-dependency-path: webui/package-lock.json
     - name: npm ci
       working-directory: ./webui
       run: npm ci  
