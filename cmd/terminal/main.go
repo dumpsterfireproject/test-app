@@ -1,41 +1,43 @@
-package main
+package terminal
 
-import (
-	"context"
-	"log"
+var x = ""
 
-	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
-	"github.com/cycle-labs/test-app/internal/adapters/terminal"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+// import (
+// 	"context"
+// 	"log"
 
-	"github.com/genjidb/genji"
-)
+// 	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
+// 	"github.com/cycle-labs/test-app/internal/adapters/terminal"
+// 	"github.com/cycle-labs/test-app/internal/domain/ports"
 
-func main() {
-	// f, _ := os.OpenFile("testlogfile.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	// log.SetOutput(f)
-	// defer f.Close()
+// 	"github.com/genjidb/genji"
+// )
 
-	ctx := context.Background()
-	db, err := createInMemoryDatabase()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-	repository := inventorydb.NewGengiInventoryStockRepository(db)
-	err = repository.SeedData(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	stockService, _ := ports.NewInventoryStock(repository)
+// func main() {
+// 	// f, _ := os.OpenFile("testlogfile.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+// 	// log.SetOutput(f)
+// 	// defer f.Close()
 
-	theApp := terminal.NewTerminalApp(stockService)
-	if err := theApp.Run(); err != nil {
-		panic(err)
-	}
-}
+// 	ctx := context.Background()
+// 	db, err := createInMemoryDatabase()
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer db.Close()
+// 	repository := inventorydb.NewGengiInventoryStockRepository(db)
+// 	err = repository.SeedData(ctx)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	stockService, _ := ports.NewInventoryStock(repository)
 
-func createInMemoryDatabase() (*genji.DB, error) {
-	db, err := genji.Open(":memory:")
-	return db, err
-}
+// 	theApp := terminal.NewTerminalApp(stockService)
+// 	if err := theApp.Run(); err != nil {
+// 		panic(err)
+// 	}
+// }
+
+// func createInMemoryDatabase() (*genji.DB, error) {
+// 	db, err := genji.Open(":memory:")
+// 	return db, err
+// }
