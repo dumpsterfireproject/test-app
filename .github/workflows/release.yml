@@ -4,6 +4,9 @@ on:
   release:
     types: [created]
 
+env:
+  CMD_PATH: ./cmd/server
+
 jobs:
   releases-matrix:
     name: Release Go Binary
@@ -40,14 +43,15 @@ jobs:
         run: go build -v ./...
       - name: Run tests
         run: go test -v ./...
-      - uses: wangyoucao577/go-release-action@v1.19
+      - uses: wangyoucao577/go-release-action@v1.32
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
           goversion: 1.19
-          # project_path: "./cmd/server"
-          # build_flags: "./cmd/server/main.go"
+          compress_assets: false
+          project_path: "${{ env.CMD_PATH }}"
+          build_flags: -v
           binary_name: "testapp"
-          # ldflags: "-s -w"
+          ldflags: "-s -w"
           extra_files: LICENSE README.md

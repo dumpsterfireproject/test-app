@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"context"
@@ -8,22 +8,17 @@ import (
 	"github.com/cycle-labs/test-app/internal/adapters/api"
 	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
 	"github.com/cycle-labs/test-app/internal/domain/ports"
-	"github.com/genjidb/genji"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
-
-func main() {
-	startServer()
-}
 
 const (
 	apiRoot = "/api"
 )
 
-func startServer() {
+func StartServer() {
 	ctx := context.Background()
-	db, err := createInMemoryDatabase()
+	db, err := CreateInMemoryDatabase()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,10 +43,4 @@ func startServer() {
 	ginEngine.Use(static.Serve("/", fs))
 
 	ginEngine.Run(":8080")
-
-}
-
-func createInMemoryDatabase() (*genji.DB, error) {
-	db, err := genji.Open(":memory:")
-	return db, err
 }

@@ -187,6 +187,7 @@ func (repo *GengiInventoryStockRepository) SeedData(ctx context.Context) error {
 		quantity int
 	}{
 		{"25078cd9-1d4c-47eb-9f47-ff6474df0838", "8e1af20d-7c39-47e2-a70c-3938bcee2e29", "Memphis", "Available", 100},
+		{"25078cd9-1d4c-47eb-9f47-ff6474df0839", "8e1af20d-7c39-47e2-a70c-3938bcee2e29", "Secaucus", "Available", 250},
 		{"51b65e8e-b7a2-407a-94d5-ead20b5d12e9", "7a6b2ef2-1d30-4d1a-a492-fa9d3a361fcc", "Memphis", "Available", 75},
 		{"0f1f9cee-6f46-4b01-b276-2e35fd093f66", "5fb61987-a6f4-49c5-bc9d-3ed3ff825569", "Memphis", "Available", 18},
 		{"f9dafd40-1d16-4c36-8cc7-c0970f80322d", "0ccb503a-8944-4c07-b47f-2a1daafe0dee", "Memphis", "Available", 5000},
