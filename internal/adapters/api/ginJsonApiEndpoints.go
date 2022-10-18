@@ -19,6 +19,7 @@ func NewGinJsonAPIEndpoints(stockService ports.InventoryStockService) *GinJsonAP
 
 func (api *GinJsonAPIEndpoints) AddInventoryRoutes(root *gin.RouterGroup) {
 	root.GET("items", api.service.ListItemsRequestHander())
+	root.GET("items/:id", api.service.GetItemRequestHander())
 	root.GET("inventory", api.service.ListInventoryRequestHander())
 	root.POST("addInventory", api.service.AddInventoryRequestHander())
 	root.DELETE("removeInventory", api.service.DeleteInventoryRequestHander())

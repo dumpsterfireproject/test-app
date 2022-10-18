@@ -10,6 +10,7 @@ import (
 )
 
 type GinJsonAPIService interface {
+	GetItemRequestHander() func(c *gin.Context)
 	ListItemsRequestHander() func(c *gin.Context)
 	ListInventoryRequestHander() func(c *gin.Context)
 	AddInventoryRequestHander() func(c *gin.Context)
@@ -22,6 +23,17 @@ type GinJsonAPIServiceImpl struct {
 
 func NewGinJsonAPIService(stockService ports.InventoryStockService) GinJsonAPIService {
 	return &GinJsonAPIServiceImpl{stockService: stockService}
+}
+
+func (api *GinJsonAPIServiceImpl) GetItemRequestHander() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		itemID := c.Param("id")
+		item, err := api.stockService.GetItem(c.Request.Context(), itemID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		c.JSON(http.StatusOK, item)
+	}
 }
 
 func (api *GinJsonAPIServiceImpl) ListItemsRequestHander() func(c *gin.Context) {

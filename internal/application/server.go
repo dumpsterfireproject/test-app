@@ -8,6 +8,7 @@ import (
 	"github.com/cycle-labs/test-app/internal/adapters/api"
 	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
 	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
@@ -35,6 +36,7 @@ func StartServer() {
 	graphQLAPI := api.NewGraphQLEndpoints(stockService, apiRoot)
 
 	ginEngine := gin.Default()
+	ginEngine.Use(corsHandler())
 	authenticatedRoot := authenticatedAPI.AuthenticatedRouterGroup(ginEngine, apiRoot)
 	jsonAPI.AddInventoryRoutes(authenticatedRoot)
 	graphQLAPI.AddGraphQLRoutes(authenticatedRoot)
@@ -43,4 +45,14 @@ func StartServer() {
 	ginEngine.Use(static.Serve("/", fs))
 
 	ginEngine.Run(":8080")
+}
+
+// TODO: Update this to be less permissive
+func corsHandler() gin.HandlerFunc {
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = []string{"Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization"}
+	config.AllowCredentials = true
+	config.ExposeHeaders = []string{"Content-Length"}
+	return cors.New(config)
 }
