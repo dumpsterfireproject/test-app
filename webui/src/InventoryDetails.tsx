@@ -34,7 +34,7 @@ export default function InventoryDetails(props: Props) {
           console.log(err.message);
       });
     }
- }, [props.current]);
+ }, [props]);
 
   return (
     <React.Fragment>

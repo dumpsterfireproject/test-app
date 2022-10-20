@@ -20,7 +20,6 @@ import {Item} from './Item';
 import Items from './Items';
 import InventoryDetails from './InventoryDetails';
 import ItemDetails from './ItemDetails';
-import { stringify } from 'querystring';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
