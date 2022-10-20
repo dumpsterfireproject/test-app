@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/cycle-labs/test-app/internal/domain/model"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/domain/model"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 	"github.com/gin-gonic/gin"
 )
 
@@ -67,12 +67,13 @@ func (api *GinJsonAPIServiceImpl) AddInventoryRequestHander() func(c *gin.Contex
 	return func(c *gin.Context) {
 		inventory := &model.Inventory{}
 		if err := c.ShouldBindJSON(inventory); err != nil {
-			_, err := api.stockService.AddInventory(c.Request.Context(), inventory)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			}
-			c.Status(http.StatusCreated)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
+		_, err := api.stockService.AddInventory(c.Request.Context(), inventory)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		c.Status(http.StatusCreated)
 	}
 }
 

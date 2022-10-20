@@ -8,8 +8,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/inventorydb"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 	"github.com/genjidb/genji"
 	"github.com/gin-gonic/gin"
 )

@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/cycle-labs/test-app/internal/application"
+	"github.com/dumpsterfireproject/test-app/internal/application"
 )
 
 func main() {

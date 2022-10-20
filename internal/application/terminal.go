@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/cycle-labs/test-app/internal/adapters/inventorydb"
-	"github.com/cycle-labs/test-app/internal/adapters/terminal"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/inventorydb"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/terminal"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 )
 
 func StartLocalTerminalApplication() {

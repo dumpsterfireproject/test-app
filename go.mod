@@ -1,4 +1,4 @@
-module github.com/cycle-labs/test-app
+module github.com/dumpsterfireproject/test-app
 
 go 1.19
 

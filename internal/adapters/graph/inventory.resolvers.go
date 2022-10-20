@@ -6,9 +6,9 @@ package graph
 import (
 	"context"
 
-	"github.com/cycle-labs/test-app/internal/adapters/graph/generated"
-	"github.com/cycle-labs/test-app/internal/adapters/graph/model"
-	domain "github.com/cycle-labs/test-app/internal/domain/model"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/graph/generated"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/graph/model"
+	domain "github.com/dumpsterfireproject/test-app/internal/domain/model"
 )
 
 // AddInventory is the resolver for the addInventory field.

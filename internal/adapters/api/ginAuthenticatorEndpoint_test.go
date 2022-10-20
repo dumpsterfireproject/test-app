@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/cycle-labs/test-app/internal/adapters/api"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/api"
 	"github.com/gin-gonic/gin"
 	. "github.com/smartystreets/goconvey/convey"
 )

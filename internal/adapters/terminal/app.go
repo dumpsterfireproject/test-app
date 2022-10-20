@@ -3,8 +3,8 @@ package terminal
 import (
 	"context"
 
-	"github.com/cycle-labs/test-app/internal/domain/model"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/domain/model"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )

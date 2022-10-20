@@ -3,7 +3,7 @@ package ports
 import (
 	"context"
 
-	"github.com/cycle-labs/test-app/internal/domain/model"
+	"github.com/dumpsterfireproject/test-app/internal/domain/model"
 )
 
 type InventoryStockRepository interface {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/cycle-labs/test-app/internal/domain/model"
+	"github.com/dumpsterfireproject/test-app/internal/domain/model"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )

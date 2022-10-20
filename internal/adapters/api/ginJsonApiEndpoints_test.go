@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,8 +9,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/cycle-labs/test-app/internal/adapters/api"
-	"github.com/cycle-labs/test-app/internal/adapters/graph/model"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/api"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/graph/model"
 	"github.com/genjidb/genji"
 	"github.com/gin-gonic/gin"
 	. "github.com/smartystreets/goconvey/convey"
@@ -118,6 +119,46 @@ func TestAddInventoryRoutes_GetInventory(t *testing.T) {
 					err := json.Unmarshal([]byte(testServer.Recorder.Body.String()), &got)
 					SoMsg(tc.path, err, ShouldBeNil)
 					SoMsg(tc.path, len(got), ShouldEqual, tc.wantElementsInBody)
+				})
+			})
+
+		})
+	}
+}
+
+func TestAddInventoryRoutes_AddInventory(t *testing.T) {
+	testCases := []struct {
+		path       string
+		wantStatus int
+	}{
+		// wantElementsInBody based on seed data
+		{"/addInventory", http.StatusCreated},
+	}
+	for _, tc := range testCases {
+
+		Convey("Given a JSON HTTP adapter to access an InventoryStockService", t, func() {
+			testServer := NewTestJsonServer(t)
+			defer testServer.Close()
+
+			Convey("When an authorized POST request is made", func() {
+				inventory := &model.Inventory{
+					ID: "",
+					Item: &model.Item{
+						ID:          "8e1af20d-7c39-47e2-a70c-3938bcee2e29",
+						Sku:         "60760-3400",
+						Description: "Modafinil",
+					},
+					Location: "Memphis",
+					Status:   "Quarantine",
+					Quantity: 100,
+				}
+				body, _ := json.Marshal(inventory)
+				req := authenticatedRequest("POST", tc.path, bytes.NewBuffer(body))
+				testServer.ServeHTTP(req)
+
+				Convey("Then response status code should be 201", func() {
+					got := testServer.Recorder.Result().StatusCode
+					SoMsg(tc.path, got, ShouldEqual, tc.wantStatus)
 				})
 			})
 

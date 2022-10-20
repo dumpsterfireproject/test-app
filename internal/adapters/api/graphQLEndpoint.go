@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 	"github.com/gin-gonic/gin"
 )
 

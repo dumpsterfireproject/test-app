@@ -11,8 +11,8 @@ import (
 	"github.com/genjidb/genji/types"
 	"github.com/google/uuid"
 
-	"github.com/cycle-labs/test-app/internal/domain/model"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/domain/model"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 )
 
 // Return a new InventoryStockRepository that utilizes a genjiDB

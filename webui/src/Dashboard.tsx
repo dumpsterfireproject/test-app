@@ -14,11 +14,23 @@ import MuiDrawer from '@mui/material/Drawer';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {Item} from './Item';
 import Items from './Items';
 import InventoryDetails from './InventoryDetails';
 import ItemDetails from './ItemDetails';
 import { stringify } from 'querystring';
+
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 const drawerWidth: number = 240;
 
@@ -73,13 +85,93 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   const mdTheme = createTheme();
   
   function DashboardContent() {
-    const [open, setOpen] = React.useState(true);
+    const [drawerOpen, setDrawerOpen] = React.useState(true);
     const toggleDrawer = () => {
-      setOpen(!open);
+      setDrawerOpen(!drawerOpen);
     };
 
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState<Item[]>([]);
     const [currentItem, setCurrentItem] = useState<Item|undefined>(undefined);
+    const [updateCount, setUpdateCount] = useState(0);
+
+    const [confirmAddOpen, setConfirmAddOpen] = React.useState(false);
+    const [confirmRemoveOpen, setConfirmRemoveOpen] = React.useState(false);
+    const [confirmItemId, setConfirmItemId] = React.useState("");
+    const [confirmLocation, setConfirmLocation] = React.useState("");
+    const [confirmStatus, setConfirmStatus] = React.useState("");
+    const [confirmQuantity, setConfirmQuantity] = React.useState(0);
+    
+    const handleClickAddIcon = () => {
+      items.length > 0 ? setConfirmItemId(items[0].id) : setConfirmItemId("")
+      setConfirmAddOpen(true);
+      setConfirmLocation("");
+      setConfirmStatus("");
+      setConfirmQuantity(0);
+    };
+
+    const handleClickRemoveIcon = () => {
+      items.length > 0 ? setConfirmItemId(items[0].id) : setConfirmItemId("")
+      setConfirmRemoveOpen(true);
+      setConfirmLocation("");
+      setConfirmStatus("");
+      setConfirmQuantity(0);
+    };
+  
+    const handleChange = (event: SelectChangeEvent) => {
+      setConfirmItemId(event.target.value);
+      console.log(event.target.value);
+    };
+
+    const handleConfirmAddClose = () => {
+      let item = items.find(i => i.id === confirmItemId)
+      if (item && confirmLocation && confirmStatus && confirmQuantity) {
+        
+        fetch(
+          'http://localhost:8080/api/addInventory',
+          {
+            method: 'POST', 
+            headers: {  
+              'Authorization': 'Bearer 1234'  
+            },
+            body: JSON.stringify({
+              id: "",
+              item: {
+                id: item.id,
+	              sku: item.sku,
+	              description: item.description,
+              },
+              location: confirmLocation,
+              status: confirmStatus,
+              quantity: confirmQuantity
+            })
+          },
+          )
+          .then((response) => {
+            console.log("Refresh" + response.status);
+            setUpdateCount(updateCount+1)
+          })
+          .catch((err) => {
+              console.log(err.message);
+          });
+      }
+      setConfirmAddOpen(false);
+    };
+    const handleConfirmRemoveClose = () => {
+      setConfirmRemoveOpen(false);
+    };
+
+    const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setConfirmLocation(event.target.value);
+    };
+
+    const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setConfirmStatus(event.target.value);
+    };
+
+    const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      var i = parseInt(event.target.value);
+      setConfirmQuantity(i);
+    };
 
     useEffect(() => {
       fetch(
@@ -95,6 +187,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
          .then((data) => {
             console.log(data);
             setItems(data);
+            if (data.length > 0) {
+              setCurrentItem(data[0])
+            } 
          })
          .catch((err) => {
             console.log(err.message);
@@ -105,7 +200,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       <ThemeProvider theme={mdTheme}>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
-          <AppBar position="absolute" open={open}>
+          <AppBar position="absolute" open={drawerOpen}>
             <Toolbar
               sx={{
                 pr: '24px', // keep right padding when drawer closed
@@ -118,7 +213,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
                 onClick={toggleDrawer}
                 sx={{
                   marginRight: '36px',
-                  ...(open && { display: 'none' }),
+                  ...(drawerOpen && { display: 'none' }),
                 }}
               >
                 <MenuIcon />
@@ -132,9 +227,123 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
               >
                 Available Inventory
               </Typography>
+              <IconButton color="inherit" onClick={handleClickAddIcon}>
+                <CreateIcon />
+              </IconButton>
+              <IconButton color="inherit" onClick={handleClickRemoveIcon}>
+                <DeleteIcon />
+              </IconButton>
+
+              <Dialog open={confirmAddOpen} onClose={handleConfirmAddClose}>
+                <DialogTitle>Add Inventory</DialogTitle>
+                <DialogContent>
+                  <InputLabel id="demo-simple-select-label">SKU</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={confirmItemId}
+                    label="Age"
+                    onChange={handleChange}
+                  >
+                    {items.map((item) => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>{item.description}</MenuItem>
+                      )
+                    })}
+                  </Select>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="addLocation"
+                    label="Location"
+                    type="string"
+                    fullWidth
+                    variant="standard"
+                    onChange={handleLocationChange}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="addStatus"
+                    label="Status"
+                    type="string"
+                    fullWidth
+                    variant="standard"
+                    onChange={handleStatusChange}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="addQuantity"
+                    label="Quantity"
+                    type="Number"
+                    fullWidth
+                    variant="standard"
+                    onChange={handleQuantityChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleConfirmAddClose}>Cancel</Button>
+                  <Button onClick={handleConfirmAddClose}>Add</Button>
+                </DialogActions>
+              </Dialog>
+
+
+              <Dialog open={confirmRemoveOpen} onClose={handleConfirmRemoveClose}>
+                <DialogTitle>Remove Inventory</DialogTitle>
+                <DialogContent>
+                  <InputLabel id="demo-simple-select-label">SKU</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={confirmItemId}
+                    label="Age"
+                    onChange={handleChange}
+                  >
+                    {items.map((item) => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>{item.description}</MenuItem>
+                      )
+                    })}
+                  </Select>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="removeLocation"
+                    label="Location"
+                    type="string"
+                    fullWidth
+                    variant="standard"
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="removeStatus"
+                    label="Status"
+                    type="string"
+                    fullWidth
+                    variant="standard"
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="removeQuantity"
+                    label="Quantity"
+                    type="Number"
+                    fullWidth
+                    variant="standard"
+                    onChange={handleQuantityChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleConfirmRemoveClose}>Cancel</Button>
+                  <Button onClick={handleConfirmRemoveClose}>Remove</Button>
+                </DialogActions>
+              </Dialog>
+
             </Toolbar>
           </AppBar>
-          <Drawer variant="permanent" open={open}>
+          <Drawer variant="permanent" open={drawerOpen}>
             <Toolbar
               sx={{
                 display: 'flex',
@@ -187,7 +396,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
                 {/* Available Inventory */}
                 <Grid item xs={12} md={8} lg={9}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <InventoryDetails current={currentItem}/>
+                    <InventoryDetails current={currentItem} key={"InventoryDetails-"+updateCount}/>
                   </Paper>
                 </Grid>
               </Grid>

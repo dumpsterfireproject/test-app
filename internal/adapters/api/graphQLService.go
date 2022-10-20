@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/cycle-labs/test-app/internal/adapters/graph"
-	"github.com/cycle-labs/test-app/internal/adapters/graph/generated"
-	"github.com/cycle-labs/test-app/internal/domain/ports"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/graph"
+	"github.com/dumpsterfireproject/test-app/internal/adapters/graph/generated"
+	"github.com/dumpsterfireproject/test-app/internal/domain/ports"
 	"github.com/gin-gonic/gin"
 )
 

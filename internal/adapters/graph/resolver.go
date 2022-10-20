@@ -1,6 +1,6 @@
 package graph
 
-import "github.com/cycle-labs/test-app/internal/domain/ports"
+import "github.com/dumpsterfireproject/test-app/internal/domain/ports"
 
 // This file will not be regenerated automatically.
 //
